@@ -1,3 +1,4 @@
+import 'package:bubble/config/themes/palette.dart';
 import 'package:bubble/presentation/router/router.dart';
 import 'package:fl_country_code_picker/fl_country_code_picker.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,11 @@ class MyApp extends StatelessWidget {
         builder: (context, child) {
           return MaterialApp(
             theme: ThemeData(
+              scaffoldBackgroundColor: Palette.white,
+              appBarTheme: const AppBarTheme(
+                elevation: 0,
+                backgroundColor: Palette.white,
+              ),
               fontFamily: "WorkSans",
             ),
             supportedLocales: flc.supportedLocales.map((e) => Locale(e)),

@@ -1,6 +1,7 @@
 import 'package:bubble/config/assets/svgs.dart';
 import 'package:bubble/config/themes/dimensions.dart';
 import 'package:bubble/config/themes/palette.dart';
+import 'package:bubble/presentation/router/router.dart';
 import 'package:bubble/presentation/widgets/asset_image.dart';
 import 'package:bubble/presentation/widgets/cutom_textfield.dart';
 import 'package:fl_country_code_picker/fl_country_code_picker.dart';
@@ -46,7 +47,10 @@ class _AuthScreenState extends State<AuthScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          AppNavigator.push(
+              context: context, screenName: AppRouter.VERIFICATION_SCREEN);
+        },
         backgroundColor: Palette.blue,
         child: const Icon(
           Icons.keyboard_arrow_right_rounded,
@@ -117,7 +121,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                               package: val.flagImagePackage,
                                             ),
                                       WhiteSpace.gapW10,
-                                      Text(val == null ? "- -" : val.dialCode)
+                                      Text(val == null ? "- - " : val.dialCode)
                                     ],
                                   ),
                                 );
