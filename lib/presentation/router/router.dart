@@ -1,5 +1,6 @@
 // ignore_for_file: constant_identifier_names
 
+import 'package:bubble/presentation/screens/auth/auth_screen.dart';
 import 'package:flutter/material.dart';
 part 'app_navigator.dart';
 
@@ -17,7 +18,7 @@ class AppRouter {
 
       case AUTH_SCREEN:
         return MaterialPageRoute(
-          builder: (context) => const Scaffold(),
+          builder: (context) => const AuthScreen(),
         );
 
       case HOME_SCREEN:
