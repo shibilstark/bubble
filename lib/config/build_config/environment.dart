@@ -1,0 +1,1 @@
+enum EvnType { dev, prod }
