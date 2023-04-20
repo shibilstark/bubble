@@ -1,4 +1,5 @@
 import 'package:bubble/domain/auth/auth_repository/auth_repository.dart';
+import 'package:fl_country_code_picker/fl_country_code_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bubble/domain/app_failure/app_failure.dart';
 import 'package:bubble/domain/app_failure/app_failure_enums.dart';
@@ -16,6 +17,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc(this.repository) : super(AuthInitial()) {
     on<CreateUser>(_createUser);
     on<VerifyWithOtp>(_verifyWithOtp);
+    on<LoadAuth>(_loadAuth);
+  }
+
+  void _loadAuth(LoadAuth event, Emitter<AuthState> emit) async {
+    final auth = repository.getFromDB();
+
+    if (auth == null) {
+      emit(AuthNotFound());
+    } else {
+      emit(AuthSuccess(auth));
+    }
   }
 
   void _createUser(CreateUser event, Emitter<AuthState> emit) async {
@@ -24,7 +36,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (await _haveConnection()) {
       await repository.loginWithPhone(event.phoneNumber).then((result) {
         result.fold((l) => emit(AuthError(l)), (auth) {
-          emit(AuthVerfication(auth));
+          emit(AuthVerfication(
+            auth: auth,
+            countryCode: event.countryCode,
+          ));
         });
       });
     } else {
@@ -33,20 +48,35 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   void _verifyWithOtp(VerifyWithOtp event, Emitter<AuthState> emit) async {
-    emit(AuthLoading());
+    emit(AuthVerfication(
+        auth: event.auth, countryCode: event.countryCode, isLoading: true));
     if (await _haveConnection()) {
       await repository
           .verifyUserWithOtp(
-              phoneNumber: event.phoneNumber,
-              secretCode: event.secretCode,
-              userId: event.userId)
+        phoneNumber: event.auth.phone,
+        secretCode: event.secretCode,
+        userId: event.auth.userId,
+      )
           .then((result) {
-        result.fold((l) => emit(AuthError(l)), (auth) {
+        result.fold(
+            (error) => emit(AuthVerfication(
+                  auth: event.auth,
+                  countryCode: event.countryCode,
+                  isError: true,
+                  error: error,
+                )), (auth) {
           emit(AuthSuccess(auth));
         });
       });
     } else {
-      _handleInternetError(emit);
+      emit(AuthVerfication(
+          auth: event.auth,
+          countryCode: event.countryCode,
+          isError: true,
+          error: const AppFailure(
+            message: "Seems like no internet connection, check your connection",
+            type: FailureType.internet,
+          )));
     }
   }
 

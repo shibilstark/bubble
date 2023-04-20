@@ -9,4 +9,6 @@ abstract class AuthRepository {
     required String secretCode,
     required String phoneNumber,
   });
+
+  AuthModel? getFromDB();
 }

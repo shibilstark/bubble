@@ -6,7 +6,7 @@ import 'package:bubble/domain/app_db/app_db_repository.dart';
 class AppDbRepositoryImplementation implements AppDbRepository {
   @override
   Future<void> initializeDB() async {
-    // await ObjectBox.initialize();
+    await ObjectBox.initialize();
     return;
   }
 }

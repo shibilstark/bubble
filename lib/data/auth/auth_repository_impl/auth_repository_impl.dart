@@ -1,5 +1,6 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:bubble/core/server/server.dart';
+import 'package:bubble/data/auth/auth_db/auth_db.dart';
 import 'package:bubble/domain/app_failure/app_failure.dart';
 import 'package:bubble/domain/app_failure/app_failure_enums.dart';
 import 'package:bubble/domain/common_types/type_defs.dart';
@@ -10,6 +11,7 @@ import 'package:bubble/domain/auth/auth_repository/auth_repository.dart';
 
 @LazySingleton(as: AuthRepository)
 class AuthRepositoryImpl implements AuthRepository {
+  final authDb = AuthDB();
   @override
   FutureEither<AuthModel> loginWithPhone(String phoneNumber) async {
     try {
@@ -54,6 +56,8 @@ class AuthRepositoryImpl implements AuthRepository {
         phone: phoneNumber,
       );
 
+      saveToDb(authModel);
+
       return Right(authModel);
     } on AppwriteException catch (e) {
       return Left(AppFailure(
@@ -68,24 +72,17 @@ class AuthRepositoryImpl implements AuthRepository {
       ));
     }
   }
-  // @override
-  // FutureEither<void> logout({required String sessionId}) async {
-  // try {
-  //   await AppServer.account.deleteSession(sessionId: sessionId);
-  //   _clearCredentials();
 
-  //   return const Right(null);
-  // } on AppwriteException catch (e) {
-  //   return Left(AppFailure(
-  //     message:
-  //         e.message ?? "Something went wrong with server try again later",
-  //     type: FailureType.server,
-  //   ));
-  // } catch (e) {
-  //   return const Left(AppFailure(
-  //     message: "Something went wrong, try again later",
-  //     type: FailureType.client,
-  //   ));
-  // }
-  // }
+  void saveToDb(AuthModel model) {
+    return authDb.saveToDb(model);
+  }
+
+  void clear() {
+    return authDb.clear();
+  }
+
+  @override
+  AuthModel? getFromDB() {
+    return authDb.get();
+  }
 }
