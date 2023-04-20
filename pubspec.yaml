@@ -44,6 +44,7 @@ dev_dependencies:
   injectable_generator: ^1.5.4
   build_runner: ^2.3.3
   flutter_lints: ^2.0.0
+  # hc1XFYtxPhLZBoXH_3jQ2A770AsYfyZWexspsTRe
 
 flutter:
   uses-material-design: true
