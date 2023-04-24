@@ -75,6 +75,12 @@ class _AuthScreenState extends State<AuthScreen> {
               context: context, screenName: AppRouter.VERIFICATION_SCREEN);
         }
 
+        // TODO CURRENTLY JUST DISABLED THE OTP FOR DEV PURPOSE SO PROCEEDING WITH OUT OTP
+        if (state is AuthSuccess) {
+          AppNavigator.pushReplacement(
+              context: context, screenName: AppRouter.HOME_SCREEN);
+        }
+
         if (state is AuthError) {
           showCustomSnackBar(
             context,
@@ -229,23 +235,26 @@ class AuthenticationButtonWidget extends StatelessWidget {
   bool _validatePhoneNumber() {
     final numberText = phoneNumberController.value.text.trim();
 
+    final numberWithCode =
+        "${countryCodeNotifier.value?.dialCode.trim() ?? "Invalid"}$numberText";
+    final isValid = numberWithCode.isPhoneNumber();
+
     List<String> errorTexts = [];
 
-    if (numberText.isNotEmpty &&
-        numberText.isPhoneNumber() &&
-        numberText.length == 10 &&
+    if (numberWithCode.isNotEmpty &&
+        isValid &&
         countryCodeNotifier.value != null) {
       return true;
     } else {
       if (countryCodeNotifier.value == null) {
         errorTexts.add("Country code can't be empty");
       }
-      if (numberText.isEmpty) {
+      if (numberWithCode.isEmpty) {
         errorTexts.add("Phone number can't be empty");
       }
 
-      if (!numberText.isPhoneNumber() || numberText.length != 10) {
-        errorTexts.add("Enter a valid phone number with 10 digits");
+      if (!isValid) {
+        errorTexts.add("Enter a valid phone number");
       }
 
       errorStatus.value = errorTexts.join(", ");
@@ -259,7 +268,8 @@ class AuthenticationButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) => FloatingActionButton(
-        onPressed: () => onTapAuthenticate(context),
+        onPressed: () =>
+            state is AuthLoading ? null : onTapAuthenticate(context),
         backgroundColor: Palette.blue,
         child: state is AuthLoading
             ? const SizedBox(

@@ -24,6 +24,10 @@ class AuthRepositoryImpl implements AuthRepository {
           expireAt: DateTime.parse(token.expire),
           phone: phoneNumber);
 
+      // TODO CURRENTLY JUST DISABLED THE OTP FOR DEV PURPOSE SO PROCEEDING WITH OUT OTP
+
+      saveToDb(authModel);
+
       return Right(authModel);
     } on AppwriteException catch (e) {
       return Left(AppFailure(

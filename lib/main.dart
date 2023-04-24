@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
                 CountryLocalizations.delegate,
               ],
               debugShowCheckedModeBanner: false,
-              initialRoute: AppRouter.AUTH_SCREEN,
+              initialRoute: AppRouter.SPLASH_SCREEN,
               onGenerateRoute: AppRouter.onGeneratedRoute,
             );
           }),

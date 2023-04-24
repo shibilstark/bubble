@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bubble/domain/auth/auth_repository/auth_repository.dart';
 import 'package:fl_country_code_picker/fl_country_code_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,7 +22,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<LoadAuth>(_loadAuth);
   }
 
-  void _loadAuth(LoadAuth event, Emitter<AuthState> emit) async {
+  void _loadAuth(LoadAuth event, Emitter<AuthState> emit) {
     final auth = repository.getFromDB();
 
     if (auth == null) {
@@ -36,10 +38,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (await _haveConnection()) {
       await repository.loginWithPhone(event.phoneNumber).then((result) {
         result.fold((l) => emit(AuthError(l)), (auth) {
-          emit(AuthVerfication(
-            auth: auth,
-            countryCode: event.countryCode,
-          ));
+          // emit(AuthVerfication(
+          //   auth: auth,
+          //   countryCode: event.countryCode,
+          // ));
+          // TODO CURRENTLY JUST DISABLED THE OTP FOR DEV PURPOSE SO PROCEEDING WITH OUT OTP
+          emit(AuthSuccess(auth));
         });
       });
     } else {

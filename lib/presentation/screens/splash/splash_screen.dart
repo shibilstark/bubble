@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bubble/presentation/logic/auth/auth_bloc.dart';
 import 'package:bubble/presentation/router/router.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +32,9 @@ class _SplashScreenState extends State<SplashScreen> {
         if (state is AuthSuccess) {
           AppNavigator.pushReplacement(
               context: context, screenName: AppRouter.HOME_SCREEN);
-        } else {
+        }
+
+        if (state is AuthNotFound) {
           AppNavigator.pushReplacement(
               context: context, screenName: AppRouter.AUTH_SCREEN);
         }

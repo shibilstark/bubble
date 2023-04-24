@@ -11,7 +11,9 @@ extension Validators on String {
   bool isPhoneNumber() {
     String pattern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
     RegExp regExp = RegExp(pattern);
-    return regExp.hasMatch(this) && length == 10;
+    return regExp.hasMatch(this)
+        //  && length > 8
+        ;
   }
 }
 

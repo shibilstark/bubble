@@ -6,6 +6,7 @@ class AuthDB {
   final box = ObjectBox.instance.store.box<AuthEntity>();
 
   void saveToDb(AuthModel model) {
+    box.removeAll();
     box.put(AuthEntity.fromModel(model));
     return;
   }
