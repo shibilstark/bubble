@@ -13,8 +13,8 @@ void showCustomSnackBar(
       elevation: 0,
       content: Container(
         padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.background,
+        decoration: const BoxDecoration(
+          color: Palette.lightBlue,
         ),
         child: Row(
           children: [
@@ -23,7 +23,7 @@ void showCustomSnackBar(
               height: 15,
               width: 15,
               decoration: const BoxDecoration(
-                color: Palette.purple,
+                color: Palette.blue,
               ),
             ),
             WhiteSpace.gapW15,
