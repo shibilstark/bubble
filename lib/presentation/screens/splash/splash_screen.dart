@@ -27,12 +27,12 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
-        if (state is AuthNotFound) {
-          AppNavigator.pushReplacement(
-              context: context, screenName: AppRouter.AUTH_SCREEN);
-        } else {
+        if (state is AuthSuccess) {
           AppNavigator.pushReplacement(
               context: context, screenName: AppRouter.HOME_SCREEN);
+        } else {
+          AppNavigator.pushReplacement(
+              context: context, screenName: AppRouter.AUTH_SCREEN);
         }
       },
       child: const Scaffold(),
