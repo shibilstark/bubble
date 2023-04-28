@@ -60,7 +60,7 @@ class CustomTextFildWidget extends StatelessWidget {
             horizontal: 15,
           ),
           filled: true,
-          fillColor: Palette.lightWhite,
+          fillColor: Palette.white,
           border: InputBorder.none,
           errorMaxLines: 3,
           suffixIcon: suffixIcon,

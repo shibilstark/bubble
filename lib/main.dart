@@ -22,27 +22,24 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: const [],
-      child: ScreenUtilInit(
-          designSize: const Size(360, 900),
-          splitScreenMode: true,
-          minTextAdapt: true,
-          builder: (context, child) {
-            return MaterialApp(
-              theme: ThemeData(
-                scaffoldBackgroundColor: Palette.white,
-                appBarTheme: const AppBarTheme(
-                  elevation: 0,
-                  backgroundColor: Palette.white,
-                ),
-                fontFamily: "WorkSans",
+    return ScreenUtilInit(
+        designSize: const Size(360, 900),
+        splitScreenMode: true,
+        minTextAdapt: true,
+        builder: (context, child) {
+          return MaterialApp(
+            theme: ThemeData(
+              scaffoldBackgroundColor: Palette.white,
+              appBarTheme: const AppBarTheme(
+                elevation: 0,
+                backgroundColor: Palette.white,
               ),
-              debugShowCheckedModeBanner: false,
-              initialRoute: AppRouter.SPLASH_SCREEN,
-              onGenerateRoute: AppRouter.onGeneratedRoute,
-            );
-          }),
-    );
+              fontFamily: "WorkSans",
+            ),
+            debugShowCheckedModeBanner: false,
+            initialRoute: AppRouter.SPLASH_SCREEN,
+            onGenerateRoute: AppRouter.onGeneratedRoute,
+          );
+        });
   }
 }
