@@ -1,6 +1,7 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:bubble/config/constants/appwrite_constants.dart';
 import 'package:bubble/core/server/server.dart';
+import 'package:bubble/data/user/user_db/user_db.dart';
 import 'package:bubble/domain/app_failure/app_failure.dart';
 import 'package:bubble/domain/user/models/user_model.dart';
 import 'package:bubble/domain/common_types/type_defs.dart';
@@ -11,6 +12,7 @@ import 'package:injectable/injectable.dart';
 
 @LazySingleton(as: UserRepository)
 class UserRepositoryImpl implements UserRepository {
+  final userDb = UserDb();
   @override
   FutureEither<void> createUser(UserModel user) async {
     try {
@@ -67,5 +69,20 @@ class UserRepositoryImpl implements UserRepository {
       return Left(
           kDebugMode ? AppFailure.client(e.toString()) : AppFailure.common());
     }
+  }
+
+  @override
+  UserModel? getUserFromDb() {
+    return userDb.getUser();
+  }
+
+  @override
+  int saveUser(UserModel model) {
+    return userDb.saveUser(model);
+  }
+
+  @override
+  void updateUserInDb(UserModel model) {
+    return userDb.updateUser(model);
   }
 }

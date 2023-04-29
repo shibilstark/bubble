@@ -7,4 +7,10 @@ abstract class UserRepository {
   FutureEither<void> updateUser(UserModel user);
 
   FutureEither<UserModel> getUser(String uid);
+
+  UserModel? getUserFromDb();
+
+  int saveUser(UserModel model);
+
+  void updateUserInDb(UserModel model);
 }

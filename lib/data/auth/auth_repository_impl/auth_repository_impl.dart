@@ -51,9 +51,13 @@ class AuthRepositoryImpl implements AuthRepository {
         isEmailVerified: user.emailVerification,
       );
 
-      final newAuthModel = authModel.copyWith(id: authDb.save(authModel));
-
-      return Right(newAuthModel);
+      return getIt<UserRepository>().getUser(user.$id).then((value) {
+        return value.fold((l) => Left(l), (r) {
+          getIt<UserRepository>().saveUser(r);
+          final newAuthModel = authModel.copyWith(id: authDb.save(authModel));
+          return Right(newAuthModel);
+        });
+      });
     } on AppwriteException catch (e) {
       return Left(AppFailure.server(e.message));
     } catch (e) {
