@@ -1,5 +1,8 @@
+import 'package:bubble/core/injections/injection_setup.dart';
 import 'package:bubble/core/server/server.dart';
 import 'package:bubble/domain/auth/auth_repository/auth_repository.dart';
+import 'package:bubble/domain/user/models/user_model.dart';
+import 'package:bubble/domain/user/user_reppsitory/user_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
@@ -48,9 +51,13 @@ class AuthRepositoryImpl implements AuthRepository {
         isEmailVerified: user.emailVerification,
       );
 
-      final newAuthModel = authModel.copyWith(id: authDb.save(authModel));
-
-      return Right(newAuthModel);
+      return getIt<UserRepository>().getUser(user.$id).then((value) {
+        return value.fold((l) => Left(l), (r) {
+          getIt<UserRepository>().saveUser(r);
+          final newAuthModel = authModel.copyWith(id: authDb.save(authModel));
+          return Right(newAuthModel);
+        });
+      });
     } on AppwriteException catch (e) {
       return Left(AppFailure.server(e.message));
     } catch (e) {
@@ -71,7 +78,21 @@ class AuthRepositoryImpl implements AuthRepository {
         userId: ID.unique(),
       );
 
-      return const Right(null);
+      final userModel = UserModel(
+        uid: user.$id,
+        userName: _getNameFromEmail(email),
+        bio: "",
+        statusText: "",
+        profilePic: "",
+        coverPic: "",
+        email: email,
+        isOnline: true,
+        groupIds: const [],
+      );
+
+      return await getIt<UserRepository>().createUser(userModel).then((value) {
+        return value.fold((l) => Left(l), (r) => const Right(null));
+      });
     } on AppwriteException catch (e) {
       return Left(AppFailure.server(e.message));
     } catch (e) {

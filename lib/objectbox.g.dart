@@ -15,6 +15,7 @@ import 'package:objectbox/objectbox.dart';
 import 'package:objectbox_flutter_libs/objectbox_flutter_libs.dart';
 
 import 'data/auth/auth_db/auth_entities.dart';
+import 'data/user/user_db/entities/user_entity.dart';
 
 export 'package:objectbox/objectbox.dart'; // so that callers only have to import this file
 
@@ -57,6 +58,65 @@ final _entities = <ModelEntity>[
             flags: 0)
       ],
       relations: <ModelRelation>[],
+      backlinks: <ModelBacklink>[]),
+  ModelEntity(
+      id: const IdUid(2, 242631486710707588),
+      name: 'UserEntity',
+      lastPropertyId: const IdUid(10, 1606466260758123064),
+      flags: 0,
+      properties: <ModelProperty>[
+        ModelProperty(
+            id: const IdUid(1, 4407790173111182323),
+            name: 'id',
+            type: 6,
+            flags: 1),
+        ModelProperty(
+            id: const IdUid(2, 5847240525840043684),
+            name: 'uid',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(3, 451111085898083856),
+            name: 'userName',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(4, 5855728184476844114),
+            name: 'bio',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(5, 2862226306370655766),
+            name: 'statusText',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(6, 6732104144673871706),
+            name: 'profilePic',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(7, 481906145735930673),
+            name: 'coverPic',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(8, 3495143377493692788),
+            name: 'email',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(9, 3844314195469178042),
+            name: 'isOnline',
+            type: 1,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(10, 1606466260758123064),
+            name: 'groupIds',
+            type: 30,
+            flags: 0)
+      ],
+      relations: <ModelRelation>[],
       backlinks: <ModelBacklink>[])
 ];
 
@@ -80,7 +140,7 @@ Future<Store> openStore(
 ModelDefinition getObjectBoxModel() {
   final model = ModelInfo(
       entities: _entities,
-      lastEntityId: const IdUid(1, 3208784639933503481),
+      lastEntityId: const IdUid(2, 242631486710707588),
       lastIndexId: const IdUid(0, 0),
       lastRelationId: const IdUid(0, 0),
       lastSequenceId: const IdUid(0, 0),
@@ -133,6 +193,64 @@ ModelDefinition getObjectBoxModel() {
                   .vTableGet(buffer, rootOffset, 14, false));
 
           return object;
+        }),
+    UserEntity: EntityDefinition<UserEntity>(
+        model: _entities[1],
+        toOneRelations: (UserEntity object) => [],
+        toManyRelations: (UserEntity object) => {},
+        getId: (UserEntity object) => object.id,
+        setId: (UserEntity object, int id) {
+          object.id = id;
+        },
+        objectToFB: (UserEntity object, fb.Builder fbb) {
+          final uidOffset = fbb.writeString(object.uid);
+          final userNameOffset = fbb.writeString(object.userName);
+          final bioOffset = fbb.writeString(object.bio);
+          final statusTextOffset = fbb.writeString(object.statusText);
+          final profilePicOffset = fbb.writeString(object.profilePic);
+          final coverPicOffset = fbb.writeString(object.coverPic);
+          final emailOffset = fbb.writeString(object.email);
+          final groupIdsOffset = fbb.writeList(
+              object.groupIds.map(fbb.writeString).toList(growable: false));
+          fbb.startTable(11);
+          fbb.addInt64(0, object.id);
+          fbb.addOffset(1, uidOffset);
+          fbb.addOffset(2, userNameOffset);
+          fbb.addOffset(3, bioOffset);
+          fbb.addOffset(4, statusTextOffset);
+          fbb.addOffset(5, profilePicOffset);
+          fbb.addOffset(6, coverPicOffset);
+          fbb.addOffset(7, emailOffset);
+          fbb.addBool(8, object.isOnline);
+          fbb.addOffset(9, groupIdsOffset);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+
+          final object = UserEntity(
+              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
+              uid: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 6, ''),
+              userName: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 8, ''),
+              bio: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 10, ''),
+              statusText: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 12, ''),
+              profilePic: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 14, ''),
+              coverPic: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 16, ''),
+              email: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 18, ''),
+              isOnline: const fb.BoolReader()
+                  .vTableGet(buffer, rootOffset, 20, false),
+              groupIds: const fb.ListReader<String>(fb.StringReader(asciiOptimization: true), lazy: false).vTableGet(buffer, rootOffset, 22, []));
+
+          return object;
         })
   };
 
@@ -164,4 +282,47 @@ class AuthEntity_ {
   /// see [AuthEntity.isEmailVerified]
   static final isEmailVerified =
       QueryBooleanProperty<AuthEntity>(_entities[0].properties[5]);
+}
+
+/// [UserEntity] entity fields to define ObjectBox queries.
+class UserEntity_ {
+  /// see [UserEntity.id]
+  static final id =
+      QueryIntegerProperty<UserEntity>(_entities[1].properties[0]);
+
+  /// see [UserEntity.uid]
+  static final uid =
+      QueryStringProperty<UserEntity>(_entities[1].properties[1]);
+
+  /// see [UserEntity.userName]
+  static final userName =
+      QueryStringProperty<UserEntity>(_entities[1].properties[2]);
+
+  /// see [UserEntity.bio]
+  static final bio =
+      QueryStringProperty<UserEntity>(_entities[1].properties[3]);
+
+  /// see [UserEntity.statusText]
+  static final statusText =
+      QueryStringProperty<UserEntity>(_entities[1].properties[4]);
+
+  /// see [UserEntity.profilePic]
+  static final profilePic =
+      QueryStringProperty<UserEntity>(_entities[1].properties[5]);
+
+  /// see [UserEntity.coverPic]
+  static final coverPic =
+      QueryStringProperty<UserEntity>(_entities[1].properties[6]);
+
+  /// see [UserEntity.email]
+  static final email =
+      QueryStringProperty<UserEntity>(_entities[1].properties[7]);
+
+  /// see [UserEntity.isOnline]
+  static final isOnline =
+      QueryBooleanProperty<UserEntity>(_entities[1].properties[8]);
+
+  /// see [UserEntity.groupIds]
+  static final groupIds =
+      QueryStringVectorProperty<UserEntity>(_entities[1].properties[9]);
 }

@@ -5,6 +5,7 @@ import 'package:bubble/presentation/widgets/custom_buttons.dart';
 import 'package:bubble/presentation/widgets/custom_snackbar.dart';
 import 'package:bubble/presentation/widgets/custom_textfield.dart';
 import 'package:bubble/presentation/widgets/indicator.dart';
+import 'package:bubble/presentation/widgets/keyboard_dismisser.dart';
 import 'package:bubble/utils/string_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,46 +47,49 @@ class SignupScreen extends StatelessWidget {
             ),
           ),
         ),
-        body: Container(
-          height: double.infinity,
-          width: double.infinity,
-          decoration: const BoxDecoration(
-            gradient: AppGradients.commonGradient,
-          ),
-          child: SafeArea(
-            child: Padding(
-              padding: AppPadding.largeScreenPadding,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        "Login to your account",
-                        style: TextStyle(
-                          fontSize: AppFontSize.bodyLarge,
-                          fontWeight: AppFontWeight.regular,
-                          color: Palette.black,
+        body: KeyBoardDismisser(
+          focusNode: FocusScope.of(context),
+          child: Container(
+            height: double.infinity,
+            width: double.infinity,
+            decoration: const BoxDecoration(
+              gradient: AppGradients.commonGradient,
+            ),
+            child: SafeArea(
+              child: Padding(
+                padding: AppPadding.largeScreenPadding,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "Login to your account",
+                          style: TextStyle(
+                            fontSize: AppFontSize.bodyLarge,
+                            fontWeight: AppFontWeight.regular,
+                            color: Palette.black,
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(height: 50.h),
-                    const SignupFieldWidgetWithButton(),
-                    SizedBox(height: 30.h),
-                    GestureDetector(
-                      onTap: () {
-                        AppNavigator.pop(context);
-                      },
-                      child: Text(
-                        "Already have an account? Login",
-                        style: TextStyle(
-                          fontSize: AppFontSize.displayLarge,
-                          fontWeight: AppFontWeight.regular,
-                          color: Palette.blue,
+                      SizedBox(height: 50.h),
+                      const SignupFieldWidgetWithButton(),
+                      SizedBox(height: 30.h),
+                      GestureDetector(
+                        onTap: () {
+                          AppNavigator.pop(context);
+                        },
+                        child: Text(
+                          "Already have an account? Login",
+                          style: TextStyle(
+                            fontSize: AppFontSize.displayLarge,
+                            fontWeight: AppFontWeight.regular,
+                            color: Palette.blue,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -168,6 +172,7 @@ class _SignupFieldWidgetWithButtonState
   }
 
   void _onTapCreate() {
+    FocusScope.of(context).unfocus();
     if (_checkIsFormValid()) {
       final email = emailController.text.trim();
       final password = passwordController.text.trim();
