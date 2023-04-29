@@ -5,7 +5,7 @@ import 'package:bubble/presentation/widgets/custom_buttons.dart';
 import 'package:bubble/presentation/widgets/custom_snackbar.dart';
 import 'package:bubble/presentation/widgets/custom_textfield.dart';
 import 'package:bubble/presentation/widgets/indicator.dart';
-import 'package:bubble/utils/string_extensions.dart';
+import 'package:bubble/presentation/widgets/keyboard_dismisser.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -38,46 +38,49 @@ class LoginScreen extends StatelessWidget {
             ),
           ),
         ),
-        body: Container(
-          height: double.infinity,
-          width: double.infinity,
-          decoration: const BoxDecoration(
-            gradient: AppGradients.commonGradient,
-          ),
-          child: SafeArea(
-            child: Padding(
-              padding: AppPadding.largeScreenPadding,
-              child: Center(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Text(
-                        "Login to your account",
-                        style: TextStyle(
-                          fontSize: AppFontSize.bodyLarge,
-                          fontWeight: AppFontWeight.regular,
-                          color: Palette.black,
-                        ),
-                      ),
-                      SizedBox(height: 50.h),
-                      const LoginFieldWithButtonWidget(),
-                      SizedBox(height: 30.h),
-                      GestureDetector(
-                        onTap: () {
-                          AppNavigator.push(
-                              context: context,
-                              screenName: AppRouter.SIGNUP_SCREEN);
-                        },
-                        child: Text(
-                          "Don't have an Account? Sign up",
+        body: KeyBoardDismisser(
+          focusNode: FocusScope.of(context),
+          child: Container(
+            height: double.infinity,
+            width: double.infinity,
+            decoration: const BoxDecoration(
+              gradient: AppGradients.commonGradient,
+            ),
+            child: SafeArea(
+              child: Padding(
+                padding: AppPadding.largeScreenPadding,
+                child: Center(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Text(
+                          "Login to your account",
                           style: TextStyle(
-                            fontSize: AppFontSize.displayLarge,
+                            fontSize: AppFontSize.bodyLarge,
                             fontWeight: AppFontWeight.regular,
-                            color: Palette.blue,
+                            color: Palette.black,
                           ),
                         ),
-                      ),
-                    ],
+                        SizedBox(height: 50.h),
+                        const LoginFieldWithButtonWidget(),
+                        SizedBox(height: 30.h),
+                        GestureDetector(
+                          onTap: () {
+                            AppNavigator.push(
+                                context: context,
+                                screenName: AppRouter.SIGNUP_SCREEN);
+                          },
+                          child: Text(
+                            "Don't have an Account? Sign up",
+                            style: TextStyle(
+                              fontSize: AppFontSize.displayLarge,
+                              fontWeight: AppFontWeight.regular,
+                              color: Palette.blue,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -139,6 +142,7 @@ class _LoginFieldWithButtonWidgetState
   }
 
   void _onTapLogin() {
+    FocusScope.of(context).unfocus();
     if (_checkIsFormValid()) {
       final email = emailController.text.trim();
       final password = passwordController.text.trim();
