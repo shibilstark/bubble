@@ -14,41 +14,46 @@ import 'package:objectbox/internal.dart'; // generated code can access "internal
 import 'package:objectbox/objectbox.dart';
 import 'package:objectbox_flutter_libs/objectbox_flutter_libs.dart';
 
-import 'data/auth/auth_db/auth_entity.dart';
+import 'data/auth/auth_db/auth_entities.dart';
 
 export 'package:objectbox/objectbox.dart'; // so that callers only have to import this file
 
 final _entities = <ModelEntity>[
   ModelEntity(
-      id: const IdUid(1, 9032221870347804523),
+      id: const IdUid(1, 3208784639933503481),
       name: 'AuthEntity',
-      lastPropertyId: const IdUid(5, 6946272440377911495),
+      lastPropertyId: const IdUid(6, 4768706980997155886),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
-            id: const IdUid(1, 5383927617419084073),
+            id: const IdUid(1, 5597328483169267672),
             name: 'id',
             type: 6,
             flags: 1),
         ModelProperty(
-            id: const IdUid(2, 1994097345457340825),
+            id: const IdUid(2, 4140073650302833152),
             name: 'userId',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(3, 3652019808879894387),
-            name: 'tokenId',
+            id: const IdUid(3, 8199008183290952082),
+            name: 'sessionId',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(4, 7733845216761008837),
+            id: const IdUid(4, 4399851375187714768),
             name: 'expireAt',
             type: 10,
             flags: 0),
         ModelProperty(
-            id: const IdUid(5, 6946272440377911495),
-            name: 'phone',
+            id: const IdUid(5, 4381598434093344858),
+            name: 'email',
             type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(6, 4768706980997155886),
+            name: 'isEmailVerified',
+            type: 1,
             flags: 0)
       ],
       relations: <ModelRelation>[],
@@ -75,7 +80,7 @@ Future<Store> openStore(
 ModelDefinition getObjectBoxModel() {
   final model = ModelInfo(
       entities: _entities,
-      lastEntityId: const IdUid(1, 9032221870347804523),
+      lastEntityId: const IdUid(1, 3208784639933503481),
       lastIndexId: const IdUid(0, 0),
       lastRelationId: const IdUid(0, 0),
       lastSequenceId: const IdUid(0, 0),
@@ -98,14 +103,15 @@ ModelDefinition getObjectBoxModel() {
         },
         objectToFB: (AuthEntity object, fb.Builder fbb) {
           final userIdOffset = fbb.writeString(object.userId);
-          final tokenIdOffset = fbb.writeString(object.tokenId);
-          final phoneOffset = fbb.writeString(object.phone);
-          fbb.startTable(6);
+          final sessionIdOffset = fbb.writeString(object.sessionId);
+          final emailOffset = fbb.writeString(object.email);
+          fbb.startTable(7);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, userIdOffset);
-          fbb.addOffset(2, tokenIdOffset);
+          fbb.addOffset(2, sessionIdOffset);
           fbb.addInt64(3, object.expireAt.millisecondsSinceEpoch);
-          fbb.addOffset(4, phoneOffset);
+          fbb.addOffset(4, emailOffset);
+          fbb.addBool(5, object.isEmailVerified);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -117,12 +123,14 @@ ModelDefinition getObjectBoxModel() {
               id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
               userId: const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 6, ''),
-              tokenId: const fb.StringReader(asciiOptimization: true)
+              sessionId: const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 8, ''),
               expireAt: DateTime.fromMillisecondsSinceEpoch(
                   const fb.Int64Reader().vTableGet(buffer, rootOffset, 10, 0)),
-              phone: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 12, ''));
+              email: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 12, ''),
+              isEmailVerified: const fb.BoolReader()
+                  .vTableGet(buffer, rootOffset, 14, false));
 
           return object;
         })
@@ -141,15 +149,19 @@ class AuthEntity_ {
   static final userId =
       QueryStringProperty<AuthEntity>(_entities[0].properties[1]);
 
-  /// see [AuthEntity.tokenId]
-  static final tokenId =
+  /// see [AuthEntity.sessionId]
+  static final sessionId =
       QueryStringProperty<AuthEntity>(_entities[0].properties[2]);
 
   /// see [AuthEntity.expireAt]
   static final expireAt =
       QueryIntegerProperty<AuthEntity>(_entities[0].properties[3]);
 
-  /// see [AuthEntity.phone]
-  static final phone =
+  /// see [AuthEntity.email]
+  static final email =
       QueryStringProperty<AuthEntity>(_entities[0].properties[4]);
+
+  /// see [AuthEntity.isEmailVerified]
+  static final isEmailVerified =
+      QueryBooleanProperty<AuthEntity>(_entities[0].properties[5]);
 }

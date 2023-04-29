@@ -4,41 +4,46 @@
   "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
   "entities": [
     {
-      "id": "1:9032221870347804523",
-      "lastPropertyId": "5:6946272440377911495",
+      "id": "1:3208784639933503481",
+      "lastPropertyId": "6:4768706980997155886",
       "name": "AuthEntity",
       "properties": [
         {
-          "id": "1:5383927617419084073",
+          "id": "1:5597328483169267672",
           "name": "id",
           "type": 6,
           "flags": 1
         },
         {
-          "id": "2:1994097345457340825",
+          "id": "2:4140073650302833152",
           "name": "userId",
           "type": 9
         },
         {
-          "id": "3:3652019808879894387",
-          "name": "tokenId",
+          "id": "3:8199008183290952082",
+          "name": "sessionId",
           "type": 9
         },
         {
-          "id": "4:7733845216761008837",
+          "id": "4:4399851375187714768",
           "name": "expireAt",
           "type": 10
         },
         {
-          "id": "5:6946272440377911495",
-          "name": "phone",
+          "id": "5:4381598434093344858",
+          "name": "email",
           "type": 9
+        },
+        {
+          "id": "6:4768706980997155886",
+          "name": "isEmailVerified",
+          "type": 1
         }
       ],
       "relations": []
     }
   ],
-  "lastEntityId": "1:9032221870347804523",
+  "lastEntityId": "1:3208784639933503481",
   "lastIndexId": "0:0",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",

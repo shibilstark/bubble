@@ -44,7 +44,10 @@ class CustomTextFildWidget extends StatelessWidget {
         controller: controller,
         focusNode: focusNode,
         onChanged: onChanged,
-        onSubmitted: onSubmitted,
+        onSubmitted: onSubmitted ??
+            (val) {
+              focusNode.nextFocus();
+            },
         scrollPhysics: const BouncingScrollPhysics(),
         maxLines: maxLines,
         textAlignVertical: TextAlignVertical.center,
@@ -52,15 +55,15 @@ class CustomTextFildWidget extends StatelessWidget {
           hintText: hintText,
           hintStyle: TextStyle(
             color: Palette.grey,
-            fontSize: AppFontSize.bodyMedium,
-            fontWeight: AppFontWeight.medium,
+            fontSize: AppFontSize.bodySmall,
+            fontWeight: AppFontWeight.regular,
           ),
           contentPadding: const EdgeInsets.symmetric(
             vertical: 15,
             horizontal: 15,
           ),
           filled: true,
-          fillColor: Palette.lightWhite,
+          fillColor: Palette.white,
           border: InputBorder.none,
           errorMaxLines: 3,
           suffixIcon: suffixIcon,
@@ -69,8 +72,9 @@ class CustomTextFildWidget extends StatelessWidget {
           prefix: prefixWiget,
         ),
         style: TextStyle(
-          fontSize: AppFontSize.bodyLarge,
-          fontWeight: AppFontWeight.medium,
+          fontSize: AppFontSize.bodySmall,
+          fontWeight: AppFontWeight.regular,
+          color: Palette.black,
         ),
       ),
     );

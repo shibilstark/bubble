@@ -1,12 +1,12 @@
-import 'dart:developer';
+// ignore_for_file: use_build_context_synchronously
 
 import 'package:bubble/domain/auth/auth_repository/auth_repository.dart';
-import 'package:fl_country_code_picker/fl_country_code_picker.dart';
+import 'package:bubble/domain/auth/models/auth_model.dart';
+import 'package:bubble/presentation/widgets/custom_snackbar.dart';
+import 'package:bubble/utils/connectivity_utils.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bubble/domain/app_failure/app_failure.dart';
-import 'package:bubble/domain/app_failure/app_failure_enums.dart';
-import 'package:bubble/domain/auth/models/auth_model.dart';
-import 'package:bubble/utils/connectivity_utils.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
@@ -15,82 +15,85 @@ part 'auth_state.dart';
 
 @injectable
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final AuthRepository repository;
-  AuthBloc(this.repository) : super(AuthInitial()) {
-    on<CreateUser>(_createUser);
-    on<VerifyWithOtp>(_verifyWithOtp);
-    on<LoadAuth>(_loadAuth);
+  final AuthRepository authRepository;
+  AuthBloc(this.authRepository) : super(AuthInitial()) {
+    on<GetAuthFromDb>(_getAuthFromDb);
+    on<AuthSignupUser>(_signupUser);
+    on<AuthLoginUser>(_loginUser);
+    on<AuthLogoutUser>(_logoutUser);
   }
 
-  void _loadAuth(LoadAuth event, Emitter<AuthState> emit) {
-    final auth = repository.getFromDB();
-
-    if (auth == null) {
-      emit(AuthNotFound());
-    } else {
-      emit(AuthSuccess(auth));
-    }
-  }
-
-  void _createUser(CreateUser event, Emitter<AuthState> emit) async {
+  void _getAuthFromDb(GetAuthFromDb event, Emitter<AuthState> emit) async {
     emit(AuthLoading());
 
-    if (await _haveConnection()) {
-      await repository.loginWithPhone(event.phoneNumber).then((result) {
-        result.fold((l) => emit(AuthError(l)), (auth) {
-          // emit(AuthVerfication(
-          //   auth: auth,
-          //   countryCode: event.countryCode,
-          // ));
-          // TODO CURRENTLY JUST DISABLED THE OTP FOR DEV PURPOSE SO PROCEEDING WITH OUT OTP
-          emit(AuthSuccess(auth));
-        });
-      });
+    final authData = authRepository.getAuthFromDb();
+
+    if (authData == null) {
+      emit(AuthLoggedOut());
     } else {
-      _handleInternetError(emit);
+      emit(AuthLoggedIn());
     }
   }
 
-  void _verifyWithOtp(VerifyWithOtp event, Emitter<AuthState> emit) async {
-    emit(AuthVerfication(
-        auth: event.auth, countryCode: event.countryCode, isLoading: true));
-    if (await _haveConnection()) {
-      await repository
-          .verifyUserWithOtp(
-        phoneNumber: event.auth.phone,
-        secretCode: event.secretCode,
-        userId: event.auth.userId,
-      )
-          .then((result) {
-        result.fold(
-            (error) => emit(AuthVerfication(
-                  auth: event.auth,
-                  countryCode: event.countryCode,
-                  isError: true,
-                  error: error,
-                )), (auth) {
-          emit(AuthSuccess(auth));
+  void _signupUser(AuthSignupUser event, Emitter<AuthState> emit) async {
+    emit(AuthLoading());
+
+    if (await _checkHaveConnection()) {
+      await authRepository
+          .signUp(email: event.email, password: event.password)
+          .then((response) {
+        response.fold((l) => _handleError(emit, l, event.context), (r) {
+          showCustomSnackBar(event.context,
+              message: "Account created Successfully, please login");
+
+          emit(AuthCreatedAccount());
         });
       });
     } else {
-      emit(AuthVerfication(
-          auth: event.auth,
-          countryCode: event.countryCode,
-          isError: true,
-          error: const AppFailure(
-            message: "Seems like no internet connection, check your connection",
-            type: FailureType.internet,
-          )));
+      _handleInternetError(emit, event.context);
     }
   }
 
-  Future<bool> _haveConnection() async =>
+  void _loginUser(AuthLoginUser event, Emitter<AuthState> emit) async {
+    emit(AuthLoading());
+    if (await _checkHaveConnection()) {
+      await authRepository
+          .login(email: event.email, password: event.password)
+          .then((response) {
+        response.fold((l) => _handleError(emit, l, event.context),
+            (r) => emit(AuthLoggedIn()));
+      });
+    } else {
+      _handleInternetError(emit, event.context);
+    }
+  }
+
+  void _logoutUser(AuthLogoutUser event, Emitter<AuthState> emit) async {
+    emit(AuthLoading());
+    if (await _checkHaveConnection()) {
+      final auth = authRepository.getAuthFromDb() as AuthModel;
+
+      await authRepository.logOut(auth.sessionId).then((response) {
+        response.fold((l) => _handleError(emit, l, event.context),
+            (r) => emit(AuthLoggedOut()));
+      });
+    } else {
+      _handleInternetError(emit, event.context);
+    }
+  }
+
+  Future<bool> _checkHaveConnection() async =>
       await ConnectivityUtil.checkInternetConnection();
 
-  void _handleInternetError(Emitter<AuthState> emit) {
-    emit(const AuthError(AppFailure(
-      message: "Seems like no internet connection, check your connection",
-      type: FailureType.internet,
-    )));
+  void _handleError(
+      Emitter<AuthState> emit, AppFailure error, BuildContext context) {
+    emit(AuthError(error));
+    showCustomSnackBar(context, message: error.message);
+  }
+
+  void _handleInternetError(Emitter<AuthState> emit, BuildContext context) {
+    final failure = AppFailure.internet();
+    showCustomSnackBar(context, message: failure.message);
+    emit(AuthError(failure));
   }
 }

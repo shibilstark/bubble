@@ -5,29 +5,35 @@ import 'package:objectbox/objectbox.dart';
 class AuthEntity {
   int id;
   final String userId;
-  final String tokenId;
+  final String sessionId;
   final DateTime expireAt;
-  final String phone;
+  final String email;
+  final bool isEmailVerified;
 
   AuthEntity({
     this.id = 0,
     required this.userId,
-    required this.tokenId,
+    required this.sessionId,
     required this.expireAt,
-    required this.phone,
+    required this.email,
+    required this.isEmailVerified,
   });
 
   factory AuthEntity.fromModel(AuthModel model) => AuthEntity(
+        id: model.id,
         userId: model.userId,
-        tokenId: model.tokenId,
+        sessionId: model.sessionId,
         expireAt: model.expireAt,
-        phone: model.phone,
+        email: model.email,
+        isEmailVerified: model.isEmailVerified,
       );
 
   AuthModel toModel() => AuthModel(
+        id: id,
         userId: userId,
-        tokenId: tokenId,
+        sessionId: sessionId,
         expireAt: expireAt,
-        phone: phone,
+        email: email,
+        isEmailVerified: isEmailVerified,
       );
 }

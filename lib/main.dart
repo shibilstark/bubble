@@ -3,10 +3,8 @@ import 'package:bubble/core/injections/injection_setup.dart';
 import 'package:bubble/domain/app_db/app_db_repository.dart';
 import 'package:bubble/presentation/logic/auth/auth_bloc.dart';
 import 'package:bubble/presentation/router/router.dart';
-import 'package:fl_country_code_picker/fl_country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fl_country_code_picker/fl_country_code_picker.dart' as flc;
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() async {
@@ -29,7 +27,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => getIt<AuthBloc>(),
-        ),
+        )
       ],
       child: ScreenUtilInit(
           designSize: const Size(360, 900),
@@ -45,10 +43,6 @@ class MyApp extends StatelessWidget {
                 ),
                 fontFamily: "WorkSans",
               ),
-              supportedLocales: flc.supportedLocales.map((e) => Locale(e)),
-              localizationsDelegates: const [
-                CountryLocalizations.delegate,
-              ],
               debugShowCheckedModeBanner: false,
               initialRoute: AppRouter.SPLASH_SCREEN,
               onGenerateRoute: AppRouter.onGeneratedRoute,

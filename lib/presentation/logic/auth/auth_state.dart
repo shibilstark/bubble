@@ -4,53 +4,23 @@ abstract class AuthState extends Equatable {
   const AuthState();
 
   @override
-  List<Object?> get props => [];
+  List<Object> get props => [];
 }
 
 class AuthInitial extends AuthState {}
 
-class AuthError extends AuthState {
-  final AppFailure error;
-
-  const AuthError(this.error);
-
-  @override
-  List<Object> get props => [error];
-}
-
 class AuthLoading extends AuthState {}
 
-class AuthNotFound extends AuthState {}
-
-class AuthSuccess extends AuthState {
-  final AuthModel auth;
-  const AuthSuccess(this.auth);
+class AuthError extends AuthState {
+  final AppFailure failure;
+  const AuthError(this.failure);
 
   @override
-  List<Object> get props => [auth];
+  List<Object> get props => [failure];
 }
 
-class AuthVerfication extends AuthState {
-  final AuthModel auth;
-  final CountryCode countryCode;
-  final bool isLoading;
-  final bool isError;
-  final AppFailure? error;
+class AuthCreatedAccount extends AuthState {}
 
-  const AuthVerfication({
-    required this.auth,
-    required this.countryCode,
-    this.isLoading = false,
-    this.isError = false,
-    this.error,
-  });
+class AuthLoggedIn extends AuthState {}
 
-  @override
-  List<Object?> get props => [
-        auth,
-        countryCode,
-        error,
-        isLoading,
-        isError,
-      ];
-}
+class AuthLoggedOut extends AuthState {}

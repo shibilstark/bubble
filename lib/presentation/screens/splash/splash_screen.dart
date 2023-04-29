@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:bubble/presentation/logic/auth/auth_bloc.dart';
 import 'package:bubble/presentation/router/router.dart';
 import 'package:flutter/material.dart';
@@ -15,31 +13,27 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    _loadAuth();
-    super.initState();
-  }
-
-  _loadAuth() async {
-    await Future.delayed(const Duration(seconds: 2)).then((_) {
-      context.read<AuthBloc>().add(const LoadAuth());
+    Future.delayed(const Duration(seconds: 2), () {
+      context.read<AuthBloc>().add(GetAuthFromDb());
     });
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
-        if (state is AuthSuccess) {
+        if (state is AuthLoggedIn) {
           AppNavigator.pushReplacement(
               context: context, screenName: AppRouter.HOME_SCREEN);
-        }
-
-        if (state is AuthNotFound) {
+        } else {
           AppNavigator.pushReplacement(
-              context: context, screenName: AppRouter.AUTH_SCREEN);
+              context: context, screenName: AppRouter.LOGIN_SCREEN);
         }
       },
-      child: const Scaffold(),
+      child: const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      ),
     );
   }
 }

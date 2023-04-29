@@ -1,16 +1,16 @@
 // ignore_for_file: constant_identifier_names
 
-import 'package:bubble/presentation/screens/auth/auth_screen.dart';
 import 'package:bubble/presentation/screens/home/home_screen.dart';
+import 'package:bubble/presentation/screens/login/login_screen.dart';
+import 'package:bubble/presentation/screens/signup/sign_up_screen.dart';
 import 'package:bubble/presentation/screens/splash/splash_screen.dart';
-import 'package:bubble/presentation/screens/verification/verification_screen.dart';
 import 'package:flutter/material.dart';
 part 'app_navigator.dart';
 
 class AppRouter {
   static const SPLASH_SCREEN = "/";
-  static const AUTH_SCREEN = "auth/";
-  static const VERIFICATION_SCREEN = "verification/";
+  static const LOGIN_SCREEN = "login/";
+  static const SIGNUP_SCREEN = "signup/";
   static const HOME_SCREEN = "home/";
 
   static Route? onGeneratedRoute(RouteSettings settings) {
@@ -20,14 +20,14 @@ class AppRouter {
           builder: (context) => const SplashScreen(),
         );
 
-      case AUTH_SCREEN:
+      case LOGIN_SCREEN:
         return MaterialPageRoute(
-          builder: (context) => const AuthScreen(),
+          builder: (context) => const LoginScreen(),
         );
 
-      case VERIFICATION_SCREEN:
+      case SIGNUP_SCREEN:
         return MaterialPageRoute(
-          builder: (context) => const VerificationScreen(),
+          builder: (context) => const SignupScreen(),
         );
 
       case HOME_SCREEN:

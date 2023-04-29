@@ -7,41 +7,42 @@ abstract class AuthEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class CreateUser extends AuthEvent {
-  final String phoneNumber;
-  final CountryCode countryCode;
-  const CreateUser({
-    required this.phoneNumber,
-    required this.countryCode,
+class AuthLoginUser extends AuthEvent {
+  final String email;
+  final String password;
+  final BuildContext context;
+
+  const AuthLoginUser({
+    required this.email,
+    required this.password,
+    required this.context,
   });
 
   @override
-  List<Object> get props => [
-        phoneNumber,
-      ];
+  List<Object> get props => [email, password, context];
 }
 
-class VerifyWithOtp extends AuthEvent {
-  final AuthModel auth;
-  final String secretCode;
-  final CountryCode countryCode;
-  const VerifyWithOtp({
-    required this.auth,
-    required this.secretCode,
-    required this.countryCode,
+class AuthSignupUser extends AuthEvent {
+  final String email;
+  final String password;
+  final BuildContext context;
+
+  const AuthSignupUser({
+    required this.email,
+    required this.password,
+    required this.context,
   });
 
   @override
-  List<Object> get props => [
-        auth,
-        secretCode,
-        countryCode,
-      ];
+  List<Object> get props => [email, password, context];
 }
 
-class LoadAuth extends AuthEvent {
-  const LoadAuth();
+class AuthLogoutUser extends AuthEvent {
+  final BuildContext context;
+  const AuthLogoutUser({required this.context});
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [context];
 }
+
+class GetAuthFromDb extends AuthEvent {}
