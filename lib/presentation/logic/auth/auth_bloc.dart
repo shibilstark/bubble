@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:bubble/core/global/data_singleton.dart';
 import 'package:bubble/domain/auth/auth_repository/auth_repository.dart';
 import 'package:bubble/domain/auth/models/auth_model.dart';
 import 'package:bubble/presentation/widgets/custom_snackbar.dart';
@@ -31,6 +32,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (authData == null) {
       emit(AuthLoggedOut());
     } else {
+      DataCache.authModel = authData;
       emit(AuthLoggedIn());
     }
   }
@@ -60,8 +62,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await authRepository
           .login(email: event.email, password: event.password)
           .then((response) {
-        response.fold((l) => _handleError(emit, l, event.context),
-            (r) => emit(AuthLoggedIn()));
+        response.fold((l) => _handleError(emit, l, event.context), (r) {
+          DataCache.authModel = r;
+          emit(AuthLoggedIn());
+        });
       });
     } else {
       _handleInternetError(emit, event.context);
