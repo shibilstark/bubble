@@ -9,7 +9,7 @@ class CircularIndicatorWidget extends StatelessWidget {
     super.key,
     this.height = 20,
     this.width = 20,
-    this.indicatorColor = Palette.blue,
+    this.indicatorColor = AppColors.themeLight,
   });
 
   @override

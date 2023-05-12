@@ -3,6 +3,7 @@ import 'package:shimmer/shimmer.dart';
 
 import '../../config/themes/themes.dart';
 
+/// Return an animated [ShimmerWidget], in case of is rounded only pass radius.
 class ShimmerWidget extends StatelessWidget {
   const ShimmerWidget(
       {Key? key,
@@ -22,11 +23,11 @@ class ShimmerWidget extends StatelessWidget {
     return Shimmer.fromColors(
         enabled: true,
         period: const Duration(seconds: 2),
-        baseColor: Palette.black.withOpacity(0.1),
-        highlightColor: Palette.white.withOpacity(0.5),
+        baseColor: AppColors.black.withOpacity(0.1),
+        highlightColor: AppColors.white.withOpacity(0.5),
         child: isRound
             ? CircleAvatar(
-                backgroundColor: Palette.white,
+                backgroundColor: AppColors.white,
                 radius: radius,
               )
             : Container(

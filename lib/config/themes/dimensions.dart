@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppFontSize {
-  static final bigTitle = 26.sp;
-  static final titleLarge = 24.sp;
-  static final titleMedium = 22.sp;
+  static final titleLarge = 28.sp;
+  static final titleMedium = 24.sp;
   static final titleSmall = 20.sp;
   static final bodyLarge = 18.sp;
   static final bodyMedium = 16.sp;
@@ -15,7 +14,6 @@ class AppFontSize {
 }
 
 class AppFontWeight {
-  static const light = FontWeight.w300;
   static const regular = FontWeight.w400;
   static const medium = FontWeight.w500;
   static const semiBold = FontWeight.w600;
@@ -24,9 +22,9 @@ class AppFontWeight {
 }
 
 class AppPadding {
-  static const largeScreenPadding = EdgeInsets.all(20);
-  static const commonScreenPadding = EdgeInsets.all(15);
-  static const homePadding = EdgeInsets.symmetric(vertical: 0, horizontal: 5);
+  static final largeScreenPadding = EdgeInsets.all(20.sp);
+  static final commonScreenPadding =
+      EdgeInsets.symmetric(horizontal: 10.h, vertical: 5.w);
 }
 
 class WhiteSpace {

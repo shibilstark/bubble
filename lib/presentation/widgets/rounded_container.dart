@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class RoundedContainerWidget extends StatelessWidget {
   const RoundedContainerWidget({
     super.key,
-    required this.borderRadius,
+    this.borderRadius = BorderRadius.zero,
     this.decoration,
     this.height,
     this.width,

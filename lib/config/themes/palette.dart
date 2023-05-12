@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
-class Palette {
-  static const Color blue = Color(0xFF1E6BFF);
-  static const Color lightWhite = Color(0xFFF0F0F0);
-  static const Color lightBlue = Color(0xFFBAD1FF);
-  static const Color black = Color(0xFF1F1F1F);
-  static const Color grey = Color(0xFF6A6A6A);
+class AppColors {
+  static const Color theme = Color(0xFFFF2323);
+  static const Color themeLight = Color(0xFFFFB1B1);
+  static const Color lightBlack = Color(0xFF343434);
+  static const Color black = Color(0xFF202020);
+  static const Color grey = Color(0xFFBCBCBC);
   static const Color white = Color(0xFFFFFFFF);
+  static const Color error = Colors.red;
+  static const Color green = Color(0xFF33FF21);
 }

@@ -54,7 +54,7 @@ class CustomTextFildWidget extends StatelessWidget {
         decoration: InputDecoration(
           hintText: hintText,
           hintStyle: TextStyle(
-            color: Palette.grey,
+            color: AppColors.grey,
             fontSize: AppFontSize.bodySmall,
             fontWeight: AppFontWeight.regular,
           ),
@@ -63,7 +63,7 @@ class CustomTextFildWidget extends StatelessWidget {
             horizontal: 15,
           ),
           filled: true,
-          fillColor: Palette.white,
+          fillColor: AppColors.white,
           border: InputBorder.none,
           errorMaxLines: 3,
           suffixIcon: suffixIcon,
@@ -74,7 +74,7 @@ class CustomTextFildWidget extends StatelessWidget {
         style: TextStyle(
           fontSize: AppFontSize.bodySmall,
           fontWeight: AppFontWeight.regular,
-          color: Palette.black,
+          color: AppColors.black,
         ),
       ),
     );

@@ -3,10 +3,13 @@ import 'package:bubble/presentation/widgets/rounded_container.dart';
 
 import '../../config/themes/themes.dart';
 
-void showCustomSnackBar(
-  BuildContext context, {
-  required String message,
-}) {
+enum SnackBarType {
+  success,
+  error,
+}
+
+void showCustomSnackBar(BuildContext context,
+    {required String message, SnackBarType type = SnackBarType.success}) {
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       padding: const EdgeInsets.all(10),
       backgroundColor: Colors.transparent,
@@ -14,7 +17,7 @@ void showCustomSnackBar(
       content: Container(
         padding: const EdgeInsets.all(10),
         decoration: const BoxDecoration(
-          color: Palette.lightBlue,
+          color: AppColors.themeLight,
         ),
         child: Row(
           children: [
@@ -22,8 +25,10 @@ void showCustomSnackBar(
               borderRadius: BorderRadius.circular(5),
               height: 15,
               width: 15,
-              decoration: const BoxDecoration(
-                color: Palette.blue,
+              decoration: BoxDecoration(
+                color: type == SnackBarType.error
+                    ? AppColors.error
+                    : AppColors.green,
               ),
             ),
             WhiteSpace.gapW15,
