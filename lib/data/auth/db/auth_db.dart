@@ -7,14 +7,14 @@ import 'package:bubble/domain/auth/models/auth_model.dart';
 import 'package:bubble/domain/common_types/type_defs.dart';
 
 class AuthDb {
-  final box = ObjectBox.instance.store.box<AuthEntity>();
+  final _box = ObjectBox.instance.store.box<AuthEntity>();
 
   EitherFailure<void> setAuthorizationData(AuthModel model) {
     try {
-      box.removeAll();
+      _box.removeAll();
       final entity = AuthEntity.fromModel(model);
 
-      box.put(entity);
+      _box.put(entity);
       return const Right(null);
     } catch (e) {
       return const Left(AppFailure(
@@ -26,7 +26,7 @@ class AuthDb {
 
   EitherFailure<AuthModel?> getCredential() {
     try {
-      final boxData = box.getAll().toList();
+      final boxData = _box.getAll().toList();
 
       if (boxData.isEmpty) {
         return const Right(null);
@@ -42,7 +42,7 @@ class AuthDb {
   }
 
   void clearCredentials() {
-    box.removeAll();
+    _box.removeAll();
     return;
   }
 }
