@@ -1,5 +1,6 @@
 import 'package:bubble/config/assets/assets.dart';
 import 'package:bubble/config/themes/themes.dart';
+import 'package:bubble/data/auth/repository_impl/auth_repository_impl.dart';
 import 'package:bubble/presentation/bloc/theme/theme_bloc.dart';
 import 'package:bubble/presentation/widgets/asset_image.dart';
 import 'package:bubble/presentation/widgets/theme_switch.dart';
@@ -51,7 +52,9 @@ class AuthButtonWidget extends StatelessWidget {
                     state.isDarkMode ? AppColors.lightBlack : AppColors.white,
                 padding:
                     const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-                onPressed: () {},
+                onPressed: () async {
+                  await AuthRepositoryImpl().googleLogin();
+                },
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20)),
                 child: Row(

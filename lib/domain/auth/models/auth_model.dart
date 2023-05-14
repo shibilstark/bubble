@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 class AuthModel {
   final int id;
   final String userId;
-  final String sessionId;
   final DateTime expireAt;
   final String email;
   final bool isEmailVerified;
@@ -13,7 +12,6 @@ class AuthModel {
   const AuthModel({
     required this.id,
     required this.userId,
-    required this.sessionId,
     required this.expireAt,
     required this.email,
     required this.isEmailVerified,
@@ -30,7 +28,6 @@ class AuthModel {
     return AuthModel(
       id: id ?? this.id,
       userId: userId ?? this.userId,
-      sessionId: sessionId ?? this.sessionId,
       expireAt: expireAt ?? this.expireAt,
       email: email ?? this.email,
       isEmailVerified: isEmailVerified ?? this.isEmailVerified,

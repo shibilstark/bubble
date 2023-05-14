@@ -3,6 +3,7 @@ import 'package:bubble/core/injections/injection_setup.dart';
 import 'package:bubble/domain/app_db/app_db_repository.dart';
 import 'package:bubble/presentation/bloc/theme/theme_bloc.dart';
 import 'package:bubble/presentation/router/router.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,6 +15,8 @@ void main() async {
 
 Future<void> initializeAppDependancies() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp();
   await configureInjection();
   await getIt<AppDbRepository>().initializeDB();
 }
