@@ -1,7 +1,10 @@
 import 'package:bubble/config/assets/assets.dart';
 import 'package:bubble/config/themes/themes.dart';
+import 'package:bubble/presentation/bloc/theme/theme_bloc.dart';
 import 'package:bubble/presentation/widgets/asset_image.dart';
+import 'package:bubble/presentation/widgets/theme_switch.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AuthScreen extends StatelessWidget {
   const AuthScreen({super.key});
@@ -40,27 +43,33 @@ class AuthButtonWidget extends StatelessWidget {
       children: [
         SizedBox(
           width: MediaQuery.of(context).size.width * 0.7,
-          child: MaterialButton(
-            elevation: 3,
-            color: AppColors.white,
-            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-            onPressed: () {},
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const AppAssetImageView(
-                  SvgAsset.googleLogo,
-                  fit: BoxFit.scaleDown,
+          child: BlocBuilder<ThemeBloc, ThemeState>(
+            builder: (context, state) {
+              return MaterialButton(
+                elevation: 3,
+                color:
+                    state.isDarkMode ? AppColors.lightBlack : AppColors.white,
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+                onPressed: () {},
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const AppAssetImageView(
+                      SvgAsset.googleLogo,
+                      fit: BoxFit.scaleDown,
+                    ),
+                    WhiteSpace.gapW10,
+                    Text(
+                      "Login or Signup",
+                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(),
+                    ),
+                  ],
                 ),
-                WhiteSpace.gapW10,
-                Text(
-                  "Login or Signup",
-                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(),
-                ),
-              ],
-            ),
+              );
+            },
           ),
         ),
         WhiteSpace.gapH10,
