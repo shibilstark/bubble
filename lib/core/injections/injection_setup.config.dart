@@ -14,6 +14,7 @@ import '../../data/preferences/preferences_repository_impl.dart' as _i8;
 import '../../domain/app_db/app_db_repository.dart' as _i3;
 import '../../domain/auth/auth_repository/auth_repository.dart' as _i5;
 import '../../domain/preferences/repository/preferences_repository.dart' as _i7;
+import '../../presentation/bloc/auth/auth_bloc.dart' as _i10;
 import '../../presentation/bloc/theme/theme_bloc.dart'
     as _i9; // ignore_for_file: unnecessary_lambdas
 
@@ -36,5 +37,6 @@ _i1.GetIt $initGetIt(
       () => _i8.PreferencesRepositoryImpl());
   gh.factory<_i9.ThemeBloc>(
       () => _i9.ThemeBloc(get<_i7.PreferencesRepository>()));
+  gh.factory<_i10.AuthBloc>(() => _i10.AuthBloc(get<_i5.AuthRepository>()));
   return get;
 }

@@ -59,7 +59,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  FutureEither<void> logOut(String sessionId) async {
+  FutureEither<void> logOut() async {
     try {
       authDb.clearCredentials();
       await google.disconnect();
