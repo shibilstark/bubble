@@ -16,7 +16,7 @@ class AuthRepositoryImpl implements AuthRepository {
   final authDb = AuthDb();
   @override
   AuthModel? getAuthFromDb() {
-    throw UnimplementedError();
+    return authDb.getCredential();
   }
 
   @override

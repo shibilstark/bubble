@@ -1,6 +1,7 @@
 import 'package:bubble/config/themes/custom_themes.dart';
 import 'package:bubble/core/injections/injection_setup.dart';
 import 'package:bubble/domain/app_db/app_db_repository.dart';
+import 'package:bubble/presentation/bloc/auth/auth_bloc.dart';
 import 'package:bubble/presentation/bloc/theme/theme_bloc.dart';
 import 'package:bubble/presentation/router/router.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -21,6 +22,9 @@ Future<void> initializeAppDependancies() async {
   await getIt<AppDbRepository>().initializeDB();
 }
 
+final GlobalKey<ScaffoldMessengerState> snackbarKey =
+    GlobalKey<ScaffoldMessengerState>();
+
 class Bubble extends StatelessWidget {
   const Bubble({super.key});
 
@@ -30,6 +34,9 @@ class Bubble extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => getIt<ThemeBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => getIt<AuthBloc>(),
         ),
       ],
       child: ScreenUtilInit(
@@ -41,10 +48,11 @@ class Bubble extends StatelessWidget {
             return BlocBuilder<ThemeBloc, ThemeState>(
               builder: (context, state) {
                 return MaterialApp(
+                  scaffoldMessengerKey: snackbarKey,
                   theme:
                       state.isDarkMode ? CustomThemes.dark : CustomThemes.light,
                   debugShowCheckedModeBanner: false,
-                  initialRoute: AppRouter.AUTH_SCREEN,
+                  initialRoute: AppRouter.SPLASH_SCREEN,
                   onGenerateRoute: AppRouter.onGeneratedRoute,
                 );
               },

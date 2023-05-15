@@ -1,9 +1,10 @@
 import 'package:bubble/config/assets/assets.dart';
 import 'package:bubble/config/themes/themes.dart';
-import 'package:bubble/data/auth/repository_impl/auth_repository_impl.dart';
+import 'package:bubble/presentation/bloc/auth/auth_bloc.dart';
 import 'package:bubble/presentation/bloc/theme/theme_bloc.dart';
+import 'package:bubble/presentation/router/router.dart';
 import 'package:bubble/presentation/widgets/asset_image.dart';
-import 'package:bubble/presentation/widgets/theme_switch.dart';
+import 'package:bubble/presentation/widgets/custom_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -12,23 +13,33 @@ class AuthScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-          child: Stack(
-        children: [
-          const AuthBackgroundWidget(),
-          Padding(
-            padding: AppPadding.largeScreenPadding,
-            child: Column(
-              children: const [
-                WelcomeTextsWidget(),
-                Spacer(),
-                AuthButtonWidget(),
-              ],
-            ),
-          )
-        ],
-      )),
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) {
+        if (state is AuthSuccess) {
+          AppNavigator.pushReplacement(
+            context: context,
+            screenName: AppRouter.HOME_SCREEN,
+          );
+        }
+      },
+      child: Scaffold(
+        body: SafeArea(
+            child: Stack(
+          children: [
+            const AuthBackgroundWidget(),
+            Padding(
+              padding: AppPadding.largeScreenPadding,
+              child: Column(
+                children: const [
+                  WelcomeTextsWidget(),
+                  Spacer(),
+                  AuthButtonWidget(),
+                ],
+              ),
+            )
+          ],
+        )),
+      ),
     );
   }
 }
@@ -46,31 +57,41 @@ class AuthButtonWidget extends StatelessWidget {
           width: MediaQuery.of(context).size.width * 0.7,
           child: BlocBuilder<ThemeBloc, ThemeState>(
             builder: (context, state) {
-              return MaterialButton(
-                elevation: 3,
-                color:
-                    state.isDarkMode ? AppColors.lightBlack : AppColors.white,
-                padding:
-                    const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-                onPressed: () async {
-                  await AuthRepositoryImpl().googleLogin();
+              return BlocBuilder<AuthBloc, AuthState>(
+                builder: (context, authState) {
+                  if (authState is AuthLoading) {
+                    return const CustomLoadingIndicator();
+                  }
+
+                  return MaterialButton(
+                    elevation: 3,
+                    color: state.isDarkMode
+                        ? AppColors.lightBlack
+                        : AppColors.white,
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+                    onPressed: () async {
+                      context.read<AuthBloc>().add(const AuthGoogleLogin());
+                    },
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const AppAssetImageView(
+                          SvgAsset.googleLogo,
+                          fit: BoxFit.scaleDown,
+                        ),
+                        WhiteSpace.gapW10,
+                        Text(
+                          "Login or Signup",
+                          style:
+                              Theme.of(context).textTheme.bodyLarge!.copyWith(),
+                        ),
+                      ],
+                    ),
+                  );
                 },
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const AppAssetImageView(
-                      SvgAsset.googleLogo,
-                      fit: BoxFit.scaleDown,
-                    ),
-                    WhiteSpace.gapW10,
-                    Text(
-                      "Login or Signup",
-                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(),
-                    ),
-                  ],
-                ),
               );
             },
           ),
@@ -148,7 +169,7 @@ class AuthBackgroundWidget extends StatelessWidget {
     return const Align(
       alignment: Alignment.centerRight,
       child: AppAssetImageView(
-        SvgAsset.appLogo,
+        SvgAsset.appLogoHalf,
         fit: BoxFit.cover,
       ),
     );
