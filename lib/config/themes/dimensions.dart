@@ -18,11 +18,10 @@ class AppFontWeight {
   static const medium = FontWeight.w500;
   static const semiBold = FontWeight.w600;
   static const bold = FontWeight.w700;
-  static const extraBold = FontWeight.w800;
 }
 
 class AppPadding {
-  static final largeScreenPadding = EdgeInsets.all(20.sp);
+  static const largeScreenPadding = EdgeInsets.all(20);
   static final commonScreenPadding =
       EdgeInsets.symmetric(horizontal: 10.h, vertical: 5.w);
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 class CustomThemes {
   static ThemeData light = ThemeData(
+    fontFamily: "KoHo",
     scaffoldBackgroundColor: AppColors.white,
     appBarTheme: const AppBarTheme(
       elevation: 0,
@@ -75,6 +76,7 @@ class CustomThemes {
   );
 
   static ThemeData dark = ThemeData(
+    fontFamily: "KoHo",
     scaffoldBackgroundColor: AppColors.black,
     appBarTheme: const AppBarTheme(
       backgroundColor: AppColors.black,

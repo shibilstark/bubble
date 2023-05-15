@@ -32,8 +32,8 @@ class NetWorkImageWidget extends StatelessWidget {
                 width: width,
                 radius: 5,
               )
-            : AssetImageView(
-                fileName: placeholder!,
+            : AppAssetImageView(
+                placeholder!,
                 width: width,
                 height: height,
                 fit: BoxFit.cover,

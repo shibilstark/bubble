@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class AssetImageView extends StatelessWidget {
-  const AssetImageView({
+class AppAssetImageView extends StatelessWidget {
+  const AppAssetImageView(
+    this.fileName, {
     Key? key,
-    required this.fileName,
     this.height,
     this.width,
     this.color,
