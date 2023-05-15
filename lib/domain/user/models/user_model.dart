@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 class UserModel {
+  int id;
   final String uid;
   final String userName;
   final String bio;
@@ -13,6 +14,7 @@ class UserModel {
   final List<String> groupIds;
 
   UserModel({
+    this.id = 0,
     required this.uid,
     required this.userName,
     required this.bio,
@@ -25,6 +27,7 @@ class UserModel {
   });
 
   UserModel copyWith({
+    int? id,
     String? uid,
     String? userName,
     String? bio,
@@ -36,6 +39,7 @@ class UserModel {
     List<String>? groupIds,
   }) {
     return UserModel(
+      id: id ?? this.id,
       uid: uid ?? this.uid,
       userName: userName ?? this.userName,
       bio: bio ?? this.bio,
@@ -86,7 +90,8 @@ class UserModel {
   bool operator ==(covariant UserModel other) {
     if (identical(this, other)) return true;
 
-    return other.uid == uid &&
+    return other.id == id &&
+        other.uid == uid &&
         other.userName == userName &&
         other.bio == bio &&
         other.statusText == statusText &&
@@ -99,7 +104,8 @@ class UserModel {
 
   @override
   int get hashCode {
-    return uid.hashCode ^
+    return id.hashCode ^
+        uid.hashCode ^
         userName.hashCode ^
         bio.hashCode ^
         statusText.hashCode ^
