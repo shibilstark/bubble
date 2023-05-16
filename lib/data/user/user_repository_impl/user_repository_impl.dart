@@ -12,8 +12,6 @@ import '../../../domain/app_failure/app_failure.dart';
 
 @LazySingleton(as: UserRepository)
 class UserRepositoryImpl implements UserRepository {
-  final userDb = UserDb();
-
   @override
   FutureEither<UserModel> createUserIfNotAvailable(UserModel user) async {
     try {
@@ -24,7 +22,7 @@ class UserRepositoryImpl implements UserRepository {
 
       final model = UserModel.fromMap(document.data);
 
-      userDb.setUser(model);
+      UserDb.setUser(model);
 
       return Right(model);
     } on AppwriteException catch (e) {
@@ -38,7 +36,7 @@ class UserRepositoryImpl implements UserRepository {
 
         final model = UserModel.fromMap(newDocument.data);
 
-        userDb.setUser(model);
+        UserDb.setUser(model);
 
         return Right(UserModel.fromMap(newDocument.data));
       }
@@ -51,12 +49,12 @@ class UserRepositoryImpl implements UserRepository {
 
   @override
   UserModel getUserFromDb() {
-    return userDb.getUser();
+    return UserDb.getUser();
   }
 
   @override
   Stream<UserModel> getUserStream() {
-    return userDb.getStream();
+    return UserDb.getStream();
   }
 
   @override
@@ -71,7 +69,7 @@ class UserRepositoryImpl implements UserRepository {
       );
       final model = UserModel.fromMap(updatedDocument.data);
 
-      userDb.update(model);
+      UserDb.update(model);
 
       return const Right(null);
     } on AppwriteException catch (e) {

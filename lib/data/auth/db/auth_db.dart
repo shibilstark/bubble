@@ -3,16 +3,16 @@ import 'package:bubble/data/auth/db/entities/user_account_entity.dart';
 import 'package:bubble/domain/auth/models/auth_model.dart';
 
 class AuthDb {
-  final _box = ObjectBox.instance.store.box<AuthEntity>();
+  static final _box = ObjectBox.instance.store.box<AuthEntity>();
 
-  void setAuthorizationData(AuthModel model) {
+  static void setAuthorizationData(AuthModel model) {
     _box.removeAll();
     final entity = AuthEntity.fromModel(model);
     _box.put(entity);
     return;
   }
 
-  AuthModel? getCredential() {
+  static AuthModel? getCredential() {
     final boxData = _box.getAll().toList();
 
     if (boxData.isEmpty) {
@@ -22,7 +22,7 @@ class AuthDb {
     return boxData.first.toModel();
   }
 
-  void clearCredentials() {
+  static void clearCredentials() {
     _box.removeAll();
     return;
   }
