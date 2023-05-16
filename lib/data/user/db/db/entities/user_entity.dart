@@ -1,5 +1,7 @@
-import 'package:bubble/domain/user/models/user_model.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:objectbox/objectbox.dart';
+
+import 'package:bubble/domain/user/models/user_model.dart';
 
 @Entity()
 class UserEntity {
@@ -52,6 +54,32 @@ class UserEntity {
       email: email,
       isOnline: isOnline,
       groupIds: groupIds,
+    );
+  }
+
+  UserEntity copyWith({
+    int? id,
+    String? uid,
+    String? userName,
+    String? bio,
+    String? statusText,
+    String? profilePic,
+    String? coverPic,
+    String? email,
+    bool? isOnline,
+    List<String>? groupIds,
+  }) {
+    return UserEntity(
+      id: id ?? this.id,
+      uid: uid ?? this.uid,
+      userName: userName ?? this.userName,
+      bio: bio ?? this.bio,
+      statusText: statusText ?? this.statusText,
+      profilePic: profilePic ?? this.profilePic,
+      coverPic: coverPic ?? this.coverPic,
+      email: email ?? this.email,
+      isOnline: isOnline ?? this.isOnline,
+      groupIds: groupIds ?? this.groupIds,
     );
   }
 }

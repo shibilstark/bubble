@@ -36,9 +36,68 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "2:127746425928388546",
+      "lastPropertyId": "10:5521679416388959428",
+      "name": "UserEntity",
+      "properties": [
+        {
+          "id": "1:3266279019822794391",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:4926645332519736856",
+          "name": "uid",
+          "type": 9
+        },
+        {
+          "id": "3:7458739420888580827",
+          "name": "userName",
+          "type": 9
+        },
+        {
+          "id": "4:5114619447406939015",
+          "name": "bio",
+          "type": 9
+        },
+        {
+          "id": "5:8326514452915953554",
+          "name": "statusText",
+          "type": 9
+        },
+        {
+          "id": "6:7328507192828485993",
+          "name": "profilePic",
+          "type": 9
+        },
+        {
+          "id": "7:6679687984454882231",
+          "name": "coverPic",
+          "type": 9
+        },
+        {
+          "id": "8:8993951076519715365",
+          "name": "email",
+          "type": 9
+        },
+        {
+          "id": "9:4323039467784557189",
+          "name": "isOnline",
+          "type": 1
+        },
+        {
+          "id": "10:5521679416388959428",
+          "name": "groupIds",
+          "type": 30
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "1:7008400369325253557",
+  "lastEntityId": "2:127746425928388546",
   "lastIndexId": "0:0",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",

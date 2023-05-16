@@ -2,6 +2,14 @@ import 'package:flutter/foundation.dart';
 
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 class UserModel {
+  static const userNameKey = "userName";
+  static const bioKey = "bio";
+  static const statusTextKey = "statusText";
+  static const sprofilePicKey = "profilePic";
+  static const coverPicKey = "coverPic";
+  static const isOnlineKey = "email";
+  static const groupIdsKey = "groupIds";
+
   int id;
   final String uid;
   final String userName;
